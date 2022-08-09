@@ -1,0 +1,2 @@
+INSERT INTO `tenant` (`id`, `name`, `description`, `regdate`, `update`) VALUES (1, 'hanium', 'hanium description 1', '2021-05-27 05:01:43', '2021-06-03 05:01:43');
+INSERT INTO `tenant` (`id`, `name`, `description`, `regdate`, `update`) VALUES (2, 'hanium2', 'hanium2 description 2', '2021-05-27 05:01:43', '2021-06-03 05:01:43');

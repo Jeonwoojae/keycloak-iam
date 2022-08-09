@@ -1,0 +1,173 @@
+openapi: 3.0.1
+info:
+  title: IAM - IAM HTTP API
+  description: The IAM Service HTTP API
+  version: v1
+servers:
+  - url: /IAM-api
+paths:
+  /api/v1/tenants:
+    get:
+      tags:
+        - tenant
+      operationId: "getTenantList"            
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantDto'
+                nullable: true        
+    post:
+      tags:
+        - tenant
+      operationId: "postTenant"
+      description: Create new Tenant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantDto'      
+      responses:
+        '201':
+          description: OK    
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantDto'  
+  /api/v1/tenant/{id}:
+    get:
+      tags:
+        - tenant
+      operationId: "getTenant"
+      description: Get a tenant with the specified id
+      parameters: 
+        - name: id
+          in: path
+          description: Tenant ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK  
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantDto'                  
+  /api/v1/tenants/{id}:
+    put:
+      tags:
+        - tenant
+      operationId: "putTenant"
+      description: Update a tenant with the specified id
+      parameters: 
+        - name: id
+          in: path
+          description: Tenant ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantDto'            
+      responses:
+        '200':
+          description: OK  
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantDto'   
+  /api/v1/tenantd/{id}:
+    delete:
+      tags:
+        - tenant
+      operationId: "deleteTenant"
+      description: Update a tenant with the specified id
+      parameters: 
+        - name: id
+          in: path
+          description: Tenant ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK  
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantDto'   
+  /api/v1/groups:
+    get:
+      tags:
+        - group
+      operationId: "getGroupList"            
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupDto'
+                nullable: true                 
+components:
+  schemas:
+    TenantDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+        name:
+          type: string
+          example: 'hanium 2022'
+        description:
+          type: string
+          example: 'for student'
+          nullable: false
+        regdate:
+          description: Tenant register date/time
+          type: string
+          format: date-time
+          example: '2022-07-28T05:01:43+09:00'
+        update:
+          description: Tenant update date/time
+          type: string
+          format: date-time
+          example: '2022-07-28T05:01:43+09:00'          
+    GroupDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+        name:
+          type: string
+          example: 'hanium 2022'
+        description:
+          type: string
+          example: 'for student'
+          nullable: false
+        regdate:
+          description: Group register date/time
+          type: string
+          format: date-time
+          example: '2022-07-28T05:01:43+09:00'
+        update:
+          description: Group update date/time
+          type: string
+          format: date-time
+          example: '2022-07-28T05:01:43+09:00'         

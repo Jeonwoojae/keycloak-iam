@@ -1,0 +1,61 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.2'
+	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+	id 'java'
+	//openAPI plugin
+	id "org.openapi.generator" version "5.3.0" 
+}
+
+group = 'com.hoony'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
+	//Swagger 
+	compileOnly 'jakarta.validation:jakarta.validation-api:2.0.2'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	
+    //Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    
+    //Database (JDBC & H2)
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    runtimeOnly 'com.h2database:h2:2.1.210'
+    
+    //Related to Mybatis
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2' 
+    testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.2.2'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+openApiGenerate {    
+    generatorName = "spring"
+    inputSpec = "$rootDir/restapi/restapi.yaml".toString()
+    outputDir = "$rootDir".toString() 
+    apiPackage = "kr.or.hanium.iam.api"
+    invokerPackage = "kr.or.hanium.iam.invoker"
+    modelPackage = "kr.or.hanium.iam.api.model"
+    configOptions = [
+        dateLibrary: "java8",
+        java8: "false",
+        generateSupportingFiles: "false",
+        hideGenerationTimestamp: "true",
+        useTags: "true",
+        interfaceOnly: "true",
+        openApiNullable: "false"
+  ]
+}
+
