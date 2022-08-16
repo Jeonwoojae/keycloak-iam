@@ -8,6 +8,8 @@ image: gradle:jdk17
 
 build:
   stage: build
+  tags: 
+    - test-runner
   script:
     - chmod +x gradlew
     - sh $CI_PROJECT_DIR/gradlew clean
