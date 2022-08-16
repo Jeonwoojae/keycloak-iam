@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  db:
+    image: mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=Qwer1234!
+    ports:
+      - "3307:3307"
+
+  web:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app/
