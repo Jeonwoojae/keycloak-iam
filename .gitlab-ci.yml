@@ -8,6 +8,7 @@ build:
   image: openjdk:17-oracle
   stage: build
   before_script:
+    - echo $JAVA_HOME
     - export JAVA_HOME="usr/bin/java"
     - apt-get update -y && apt-get install wget -y
   script:
