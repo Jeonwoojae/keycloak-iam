@@ -4,7 +4,7 @@ stages:
   - package
   - deploy
 
-image: gradle:7.5.1-jdk17-alpine
+image: gradle:jdk17
 
 build:
   stage: build
