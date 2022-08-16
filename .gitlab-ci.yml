@@ -16,7 +16,7 @@ build:
     - sh $CI_PROJECT_DIR/gradlew build
   artifacts:
     paths:
-      - build/libs/*.war
+      - build/libs/*.jar
     expire_in: 10 min
 
 test:
@@ -24,7 +24,7 @@ test:
   tags:
     - test-runner
   script:
-    - ./gradlew test
+    - $CI_PROJECT_DIRgradlew test
   
 package:
   image: docker:latest
