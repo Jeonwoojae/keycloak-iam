@@ -4,7 +4,7 @@ stages:
   - package
   - deploy
 
-image: gradle:jdk17
+image: openjdk:17.0.2
 
 build:
   stage: build
