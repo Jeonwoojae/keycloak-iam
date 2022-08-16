@@ -14,7 +14,7 @@ build:
     refs:
       - master
   script:
-    - sudo chmod +x gradlew
+    - chmod +x gradlew
     - ./gradlew clean build
   artifacts:
     paths:
