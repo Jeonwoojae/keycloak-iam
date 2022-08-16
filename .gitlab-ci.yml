@@ -6,6 +6,7 @@ stages:
   - build
   - package
 
+
 build:
   image: openjdk17-oracle
   stage: build
@@ -17,6 +18,8 @@ build:
   artifacts:
     paths:
       - build/libs/*.jar
+  tags:
+  - docker-runner
 
 package:
   stage: package
@@ -27,3 +30,5 @@ package:
     - docker build -t registry.docke.com/hanium_iam .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD registry.docker.com
     - docker push registry.docker.com/hanium_iam
+  tags:
+  - docker-runner
