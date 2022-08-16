@@ -1,35 +1,57 @@
-image: docker:latest
-services:
-  - docker:dind
-
 stages:
   - build
+  - test
   - package
-
+  - deploy
 
 build:
-  image: openjdk17-oracle
+  image: openjdk:17-oracle
   stage: build
-  only:
-    refs:
-      - master
   script:
     - chmod +x gradlew
-    - ./gradlew clean build
+    - ./gradlew clean
+    - ./gradlew build
   artifacts:
     paths:
       - build/libs/*.jar
-  tags:
-  - docker-runner
+    expire_in: 10 min
 
-package:
-  stage: package
-  only:
-    refs:
-      - master
+test:
+  image: openjdk:17-oracle
+  stage: test
   script:
-    - docker build -t registry.docke.com/hanium_iam .
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD registry.docker.com
-    - docker push registry.docker.com/hanium_iam
+    - ./gradlew test
+  
+package:
+  image: docker:latest
+  stage: package
+  variables:
+    IMAGE_NAME: hanium_iam
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $DOCKER_USERNAME --password-stdin < $DOCKER_PASSWORD
+  script:
+    - docker build -t $IMAGE_NAME
+    - docker push $IMAGE_NAME
+  after_script:
+    - docker logout
+
+deploy:
+  stage: deploy
   tags:
-  - docker-runner
+    - docker-runner
+  before_script:
+    - docker login -u $DOCKER_USERNAME --password-stdin < $DOCKER_PASSWORD
+  script:
+    - docker stop hanium_iam || true
+    - docker rm hanium_iam || true
+    - docker rmi hanium_iam || true
+    - docker run -d --restart always -p 8080:8080/tcp --name hanium_iam hanium_iam
+  after_script:
+    - docker logout
+  when: on_success
+  only:
+    - master
+
+  
