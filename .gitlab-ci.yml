@@ -4,9 +4,13 @@ stages:
   - package
   - deploy
 
-build:
+default:
   image: openjdk:17-oracle
+
+build:
   stage: build
+  before_script:
+    - apt-get update -y && apt-get install wget -y
   script:
     - chmod +x gradlew
     - ./gradlew clean
@@ -17,7 +21,6 @@ build:
     expire_in: 10 min
 
 test:
-  image: openjdk:17-oracle
   stage: test
   script:
     - ./gradlew test
