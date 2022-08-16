@@ -7,8 +7,6 @@ stages:
 build:
   image: openjdk:17-oracle
   stage: build
-  before_script:
-    - export JAVA_HOME="/usr/lib/jvm/java-17.0.8-openjdk"
   script:
     - chmod +x gradlew
     - ./gradlew clean
