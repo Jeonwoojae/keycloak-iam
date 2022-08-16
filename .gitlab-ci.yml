@@ -1,0 +1,29 @@
+image: docker:latest
+services:
+  - docker:dind
+
+stages:
+  - build
+  - package
+
+build:
+  image: openjdk17-oracle
+  stage: build
+  only:
+    refs:
+      - master
+  script:
+    - ./gradlew clean build
+  artifacts:
+    paths:
+      - build/libs/*.jar
+
+package:
+  stage: package
+  only:
+    refs:
+      - master
+  script:
+    - docker build -t registry.docke.com/hanium_iam .
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD registry.docker.com
+    - docker push registry.docker.com/hanium_iam
