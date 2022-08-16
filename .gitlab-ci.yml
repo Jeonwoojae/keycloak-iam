@@ -10,11 +10,11 @@ build:
   stage: build
   script:
     - chmod +x gradlew
-    - ./gradlew clean
-    - ./gradlew build
+    - sh $CI_PROJECT_DIR/gradlew clean
+    - sh $CI_PROJECT_DIR/gradlew build
   artifacts:
     paths:
-      - build/libs/*.jar
+      - build/libs/*.war
     expire_in: 10 min
 
 test:
