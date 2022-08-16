@@ -8,8 +8,7 @@ build:
   image: openjdk:17-oracle
   stage: build
   before_script:
-    - export JAVA_HOME="usr/bin/java"
-    - sudo apt-get update -y && sudo apt-get install wget -y
+    - export JAVA_HOME="/usr/lib/jvm/java-17.0.8-openjdk
   script:
     - chmod +x gradlew
     - ./gradlew clean
