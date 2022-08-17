@@ -4,28 +4,33 @@ stages:
   - package
   - deploy
 
+image: gradle:jdk17
+
 build:
-  image: openjdk:17-oracle
   stage: build
-  tags: docker-runner
+  tags: 
+    - test-runner
   script:
     - chmod +x gradlew
-    - ./gradlew clean
-    - ./gradlew build
+    - sh $CI_PROJECT_DIR/gradlew clean
+    - sh $CI_PROJECT_DIR/gradlew build
   artifacts:
     paths:
-      - build/libs/*.jar
+      - build/libs/*.war
     expire_in: 10 min
 
 test:
-  image: openjdk:17-oracle
   stage: test
+  tags:
+    - test-runner
   script:
-    - ./gradlew test
+    - $CI_PROJECT_DIRgradlew test
   
 package:
   image: docker:latest
   stage: package
+  tags:
+    - test-runner
   variables:
     IMAGE_NAME: hanium_iam
   services:
@@ -41,7 +46,7 @@ package:
 deploy:
   stage: deploy
   tags:
-    - docker-runner
+    - test-runner
   before_script:
     - docker login -u $DOCKER_USERNAME --password-stdin < $DOCKER_PASSWORD
   script:
