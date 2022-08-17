@@ -24,7 +24,7 @@ test:
   tags:
     - test-runner
   script:
-    - $CI_PROJECT_DIRgradlew test
+    - $CI_PROJECT_DIR/gradlew test
   
 package:
   image: docker:latest
