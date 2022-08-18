@@ -1,18 +1,27 @@
 version: "3"
 
 services:
-  db:
+  database:
+    container_name: iam_db
     image: mariadb
     environment:
-      - MARIADB_ROOT_PASSWORD=Qwer1234!
+      MARIADB_DATABASE: "iam"
+      MARIADB_ROOT_PASSWORD: "Qwer1234!"
+      TZ: 'Asia/Seoul'
     ports:
-      - "3307:3307"
+      - "3306:3306"
 
-  web:
+  application:
+    container_name: iam_web
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
       - "8080:8080"
-    volumes:
-      - ./:/app/
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://iam_db:3306/iam
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "Qwer1234!"
+    depends_on:
+      - database
+
