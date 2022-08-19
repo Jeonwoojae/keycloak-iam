@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -38,5 +37,12 @@ public class Group {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @Builder
+    public Group(String groupName, List<Role> roles, List<User> users){
+        this.groupName=groupName;
+        this.roles=roles;
+        this.users=users;
+    }
 
 }
