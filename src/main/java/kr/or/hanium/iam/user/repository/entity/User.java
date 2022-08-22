@@ -1,9 +1,6 @@
 package kr.or.hanium.iam.user.repository.entity;
 import kr.or.hanium.iam.group.repository.entity.Group;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -36,4 +33,15 @@ public class User {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @Builder
+    public User(String userName, Group group){
+        this.userName=userName;
+        this.group=group;
+    }
+
+    public void update(String userName) {
+        this.userName = userName;
+        this.updatedAt = LocalDateTime.now();
+    }
 }
