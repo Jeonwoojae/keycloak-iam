@@ -10,6 +10,8 @@ services:
       TZ: 'Asia/Seoul'
     ports:
       - "3306:3306"
+    networks:
+      - network
 
   application:
     container_name: iam_web
@@ -22,6 +24,44 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mariadb://iam_db:3306/iam
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "Qwer1234!"
+      KEYCLOAK_URI: http://keycloak:8180/auth
+      REALM: SpringBootKeycloakApp
     depends_on:
       - database
+      - keycloak
+    networks:
+      - network
 
+  postgres:
+    image: postgres
+    container_name: keycloak_db
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    networks:
+      - network
+
+  keycloak:
+    image: wizzn/keycloak:14
+    container_name: keycloak
+    ports:
+      - "8180:8180"
+    command: ["-Djboss.socket.binding.port-offset=100"]
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      DB_SCHEMA: public
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+    depends_on:
+      - postgres
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
