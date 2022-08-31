@@ -43,11 +43,18 @@ services:
       - network
 
   keycloak:
-    image: wizzn/keycloak:14
+    image: jboss/keycloak:latest
     container_name: keycloak
     ports:
       - "8180:8180"
-    command: ["-Djboss.socket.binding.port-offset=100"]
+    command:
+      - "-Djboss.socket.binding.port-offset=100"
+      - "-Dkeycloak.migration.action=import"
+      - "-Dkeycloak.migration.provider=singleFile"
+      - "-Dkeycloak.migration.realmName=myrealm"
+      - "-Dkeycloak.migration.file=/tmp/keycloak.json"
+      - "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
+
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
@@ -57,6 +64,9 @@ services:
       DB_SCHEMA: public
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
+      KEYCLOAK_IMPORT: /tmp/keycloak.json
+    volumes:
+      - ./keycloak.json:/tmp/keycloak.json
     depends_on:
       - postgres
     networks:
